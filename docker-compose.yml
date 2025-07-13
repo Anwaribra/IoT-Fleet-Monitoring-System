@@ -35,9 +35,4 @@ networks:
     ports:
       - "9042:9042"
 
-  spark:
-    image: bitnami/spark:latest
-    environment:
-      - SPARK_MODE=master
-    ports:
-      - "8080:8080"
+
