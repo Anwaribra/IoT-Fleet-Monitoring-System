@@ -1,1 +1,8 @@
 venv/
+
+mqtt 
+mosquitto.conf 
+
+data
+data_log.json 
+ 

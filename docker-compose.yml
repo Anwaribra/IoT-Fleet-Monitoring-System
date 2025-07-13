@@ -1,11 +1,17 @@
 services:
-  mqtt:
+   mqtt:
     image: eclipse-mosquitto
+    container_name: mqtt-broker
     ports:
       - "1883:1883"
     volumes:
       - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - mqtt-net
 
+networks:
+  mqtt-net:
+    driver: bridge
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     environment:

@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 from datetime import datetime
 
 client = mqtt.Client()
-client.connect("localhost", 1883, 60)
+client.connect("10.255.255.254", 1883, 60)
 
 
 TOTAL_MESSAGES = 10000
