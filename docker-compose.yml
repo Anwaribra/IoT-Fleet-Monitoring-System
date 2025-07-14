@@ -1,5 +1,24 @@
 services:
-   mqtt:
+  spark:
+    image: bitnami/spark:4.0.0
+    container_name: spark-app
+    environment:
+      SPARK_USER: spark
+      SPARK_HOME: /opt/bitnami/spark
+      PYTHONPATH: "/opt/bitnami/spark/python/:/opt/bitnami/spark/python/lib/py4j.zip:"
+    volumes:
+      - ./spark:/app
+    working_dir: /opt/bitnami/spark
+    entrypoint:
+      - /opt/bitnami/scripts/spark/entrypoint.sh
+    command:
+      - /opt/bitnami/scripts/spark/run.sh
+    tty: true
+    stdin_open: true
+    networks:
+      - default
+
+  mqtt:
     image: eclipse-mosquitto
     container_name: mqtt-broker
     ports:
@@ -9,15 +28,14 @@ services:
     networks:
       - mqtt-net
 
-networks:
-  mqtt-net:
-    driver: bridge
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
+    networks:
+      - kafka-net
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -29,10 +47,18 @@ networks:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
+    networks:
+      - kafka-net
 
   cassandra:
     image: cassandra:4.1
     ports:
       - "9042:9042"
+    networks:
+      - kafka-net
 
-
+networks:
+  mqtt-net:
+    driver: bridge
+  kafka-net:
+    driver: bridge
