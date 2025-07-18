@@ -4,5 +4,5 @@ mqtt
 mosquitto.conf 
 
 data
-data_log.json 
+telemetry_log.jsonl
  

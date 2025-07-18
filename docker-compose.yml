@@ -1,64 +1,119 @@
 services:
-  spark:
-    image: bitnami/spark:4.0.0
-    container_name: spark-app
-    environment:
-      SPARK_USER: spark
-      SPARK_HOME: /opt/bitnami/spark
-      PYTHONPATH: "/opt/bitnami/spark/python/:/opt/bitnami/spark/python/lib/py4j.zip:"
-    volumes:
-      - ./spark:/app
-    working_dir: /opt/bitnami/spark
-    entrypoint:
-      - /opt/bitnami/scripts/spark/entrypoint.sh
-    command:
-      - /opt/bitnami/scripts/spark/run.sh
-    tty: true
-    stdin_open: true
-    networks:
-      - default
-
   mqtt:
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:latest
     container_name: mqtt-broker
     ports:
       - "1883:1883"
+      - "9001:9001"  
     volumes:
-      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     networks:
-      - mqtt-net
+      - iot-network
+    restart: unless-stopped
 
+  # Zookeeper for Kafka
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
     networks:
-      - kafka-net
+      - iot-network
+    restart: unless-stopped
 
+  # Kafka message broker
   kafka:
     image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
     ports:
       - "9092:9092"
     environment:
+      KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    depends_on:
-      - zookeeper
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     networks:
-      - kafka-net
+      - iot-network
+    restart: unless-stopped
 
+  # Cassandra database
   cassandra:
     image: cassandra:4.1
+    container_name: cassandra
     ports:
       - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: fleet_monitoring_cluster
+      CASSANDRA_DC: datacenter1
+      CASSANDRA_RACK: rack1
+    volumes:
+      - cassandra_data:/var/lib/cassandra
     networks:
-      - kafka-net
+      - iot-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Spark Master 
+  spark:
+    image: bitnami/spark:4.0.0
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    ports:
+      - "8080:8080"  
+      - "7077:7077"  
+    volumes:
+      - ./spark:/opt/bitnami/spark/work
+    networks:
+      - iot-network
+    restart: unless-stopped
+
+  # Spark Worker
+  spark-worker:
+    image: bitnami/spark:4.0.0
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    depends_on:
+      - spark
+    volumes:
+      - ./spark:/opt/bitnami/spark/work
+    networks:
+      - iot-network
+    restart: unless-stopped
+
+volumes:
+  cassandra_data:
+    driver: local
 
 networks:
-  mqtt-net:
+  iot-network:
     driver: bridge
-  kafka-net:
-    driver: bridge
+    name: iot-fleet-network
