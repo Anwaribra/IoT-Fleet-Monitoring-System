@@ -4,7 +4,7 @@ A comprehensive real-time IoT fleet monitoring system that tracks vehicle teleme
 
 ##  Architecture Overview
 
-![Pipeline Architecture](cassandra\Pipelinearchitecture.jpg) 
+![Pipeline Architecture](cassandra\Pipelinearchitecture.png) 
 
 ##  Features
 
