@@ -213,9 +213,9 @@ class VehicleSimulator:
         with open(f"{data_dir}/telemetry_log.jsonl", "a") as f:
             f.write(json.dumps(payload) + "\n")
     
-    def run_simulation(self, duration_minutes=60, interval_seconds=5):
-        """Run the fleet simulation"""
-        logger.info(f"Starting fleet simulation for {duration_minutes} minutes")
+    def run_simulation(self, duration_minutes=60, interval_seconds=1):
+        """Run the fleet simulation - FAST for 100k records"""
+        logger.info(f"Starting BIG DATA simulation for {duration_minutes} minutes")
         logger.info(f"Simulating {len(self.fleet)} vehicles: {list(self.fleet.keys())}")
         
         start_time = datetime.now()
@@ -224,13 +224,18 @@ class VehicleSimulator:
         
         try:
             while datetime.now() < end_time:
-                for vehicle_id in self.fleet:
-                    payload = self.generate_telemetry(vehicle_id)
-                    self.publish_telemetry(vehicle_id, payload)
-                    self.log_to_file(payload)
-                    message_count += 1
+
+                for batch in range(5):  
+                    for vehicle_id in self.fleet:
+                        payload = self.generate_telemetry(vehicle_id)
+                        self.publish_telemetry(vehicle_id, payload)
+                        message_count += 1
+                    
+                    if message_count % 1000 == 0:
+                        logger.info(f"BIG DATA: Sent {message_count} messages - Target: 100k+")
+                    
+                    time.sleep(0.2)  
                 
-                logger.info(f"Sent batch {message_count // len(self.fleet)}, total messages: {message_count}")
                 time.sleep(interval_seconds)
         
         except KeyboardInterrupt:
@@ -242,7 +247,7 @@ class VehicleSimulator:
             self.client.disconnect()
 
 if __name__ == "__main__":
-    # Configuration
+    
     MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
     MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
     SIMULATION_DURATION = int(os.getenv("SIMULATION_DURATION_MINUTES", "60"))

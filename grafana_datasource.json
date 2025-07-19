@@ -1,0 +1,27 @@
+{
+  "name": "Cassandra-Fleet",
+  "type": "hadesarchitect-cassandra-datasource",
+  "access": "proxy",
+  "isDefault": true,
+  "jsonData": {
+    "keyspace": "fleet_monitoring",
+    "port": 9042,
+    "server": "cassandra",
+    "consistencyLevel": "ONE",
+    "timeout": 30,
+    "version": "4.x"
+  },
+  "secureJsonData": {
+    "password": "cassandra",
+    "username": "cassandra"
+  }
+} 
+
+// local server for a datasource msh connect to cassandra
+
+
+
+
+
+
+

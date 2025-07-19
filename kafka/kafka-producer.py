@@ -171,13 +171,14 @@ class MQTTKafkaBridge:
         logger.error(f"Failed to send message to {kafka_topic} with key {key}: {exception}")
 
     def log_statistics(self):
-        """Log performance statistics"""
+        """Log performance statistics for BIG DATA"""
         current_time = time.time()
-        if current_time - self.last_stats_time >= 30:  # Every 30 seconds
+        if current_time - self.last_stats_time >= 10:  # Every 10 seconds for BIG DATA
+            rate = self.messages_received / (current_time - self.last_stats_time) if (current_time - self.last_stats_time) > 0 else 0
             logger.info(
-                f"Bridge stats - Received: {self.messages_received}, "
-                f"Sent: {self.messages_sent}, "
-                f"Rate: {self.messages_received / (current_time - self.last_stats_time):.2f} msg/s"
+                f"BIG DATA Bridge - Received: {self.messages_received}, "
+                f"Sent to Kafka: {self.messages_sent}, "
+                f"Rate: {rate:.0f} msg/s - Target: 100k+ records"
             )
             self.last_stats_time = current_time
     
@@ -215,12 +216,10 @@ if __name__ == "__main__":
     MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
     MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
     KAFKA_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
-    
   
     bridge = MQTTKafkaBridge(
         mqtt_broker_host=MQTT_BROKER,
         mqtt_broker_port=MQTT_PORT,
         kafka_bootstrap_servers=KAFKA_SERVERS
     )
-    
     bridge.start()
