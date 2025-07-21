@@ -1,7 +1,16 @@
 {
-  "name": "Cassandra-Fleet",
+  "id": 1,
+  "uid": "ees0o6c7pp62oe",
+  "orgId": 1,
+  "name": "Cassandra Fleet",
   "type": "hadesarchitect-cassandra-datasource",
+  "typeName": "Apache Cassandra",
   "access": "proxy",
+  "url": "",
+  "password": "",
+  "user": "",
+  "database": "fleet_monitoring",
+  "basicAuth": false,
   "isDefault": true,
   "jsonData": {
     "keyspace": "fleet_monitoring",
@@ -9,15 +18,23 @@
     "server": "cassandra",
     "consistencyLevel": "ONE",
     "timeout": 30,
-    "version": "4.x"
+    "version": "4.x",
+    "username": "cassandra",
+    "clusterType": "standalone",
+    "compression": "none",
+    "maxTimeSeries": 1000,
+    "requestTimeout": 30000,
+    "keepAlive": true,
+    "usePreparedStatements": true
   },
   "secureJsonData": {
-    "password": "cassandra",
-    "username": "cassandra"
+    "password": "cassandra"
+  },
+  "readOnly": false,
+  "secureJsonFields": {
+    "password": true
   }
 } 
-
-// local server for a datasource msh connect to cassandra
 
 
 
