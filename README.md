@@ -49,7 +49,7 @@ The system includes a realistic vehicle simulator that generates:
 
 
 ### Overview Dashboard
-![Overview Dashboard](cassandra\fleet_overview_dashboard.png)
+![Overview Dashboard](cassandra/fleet_overview_dashboard.png)
 The main dashboard shows key fleet metrics including:
 - Total number of vehicles in operation
 - Average fleet speed (63.6 km/h)
