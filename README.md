@@ -34,7 +34,7 @@ A comprehensive real-time IoT fleet monitoring system that tracks vehicle teleme
 The system includes a realistic vehicle simulator that generates:
 
 ### Vehicle Types
-- **TRUCK_001, TRUCK_002**: Heavy vehicles with lower speed limits
+- **TRUCK_001, TRUCK_002,TRUCK_003**: Heavy vehicles with lower speed limits
 - **VAN_001**: Medium vehicle with balanced performance
 - **BIKE_003**: Motorcycle with higher speed capabilities
 
@@ -46,6 +46,8 @@ The system includes a realistic vehicle simulator that generates:
 - **Battery voltage** with realistic fluctuations
 
 # IoT Fleet Monitoring Dashboard
+
+A real-time fleet monitoring system that tracks vehicle telemetry data using IoT sensors, Cassandra for storage, and Grafana for visualization.
 
 
 ### Overview Dashboard
@@ -85,9 +87,3 @@ Detailed temperature tracking featuring:
 - Fuel level tracking
 - Alert management
 - Historical data analysis
-
-
-
-
-
-
