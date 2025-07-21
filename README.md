@@ -80,10 +80,11 @@ Detailed temperature tracking featuring:
 - Mean, Max, Min temperature readings
 - Historical temperature data
 
-## Features
-- Real-time vehicle tracking
-- Speed monitoring
-- Engine temperature analysis
-- Fuel level tracking
-- Alert management
-- Historical data analysis
+### Real-Time Fleet Location Map
+![Real-Time Fleet Location Map](cassandra/RealTimeFleetLocationMap.png)
+Interactive map visualization showing:
+- Live vehicle positions with GPS coordinates
+- Route tracking with point clusters
+- Real-time updates for vehicle movements
+
+
