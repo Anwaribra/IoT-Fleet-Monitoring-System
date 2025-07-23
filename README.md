@@ -57,12 +57,6 @@ The system includes a realistic vehicle simulator that generates telemetry for:
 - **Battery voltage** with realistic fluctuations (12.0-14.4V)
 - **Odometer readings** for maintenance tracking
 
-### Realistic Behaviors
-- **Traffic simulation**: Reduced speeds during rush hours (7-9 AM, 5-7 PM)
-- **Route following**: Vehicles progress along predefined GPS waypoints
-- **Fuel management**: Automatic refueling when fuel drops below 15%
-- **Temperature correlation**: Engine temperature increases with speed and load
-
 # IoT Fleet Monitoring Dashboard
 
 A real-time fleet monitoring system that tracks vehicle telemetry data using IoT sensors, Cassandra for storage, and Grafana for visualization.
@@ -81,29 +75,22 @@ The main dashboard shows key fleet metrics including:
 
 ### Fleet Alert Management
 ![Fleet Alert Management](cassandra/fleet_alert_management.png)
-Real-time alert monitoring showing:
-- Vehicle IDs
-- Timestamps
-- Current speed
-- Engine temperature
-- Fuel levels
-- Critical thresholds for speed (>80 km/h), temperature (>100°C), and fuel (<20%)
+- Total fleet metrics and KPIs
+- Real-time vehicle speed monitoring
+- Average engine temperature across fleet
+- Alert status indicators
 
 ### Engine Temperature Monitoring
 ![Engine Temperature Monitoring](cassandra/engine_temp_monitoring.png)
-Detailed temperature tracking featuring:
-- Temperature trends over time
-- Multiple vehicle temperature comparisons
-- Temperature thresholds (85°C - 110°C)
-- Mean, Max, Min temperature readings
-- Historical temperature data
+- Real-time critical alerts
+- Threshold monitoring for speed, temperature, and fuel
+- Vehicle-specific alert tracking
 
 ### Real-Time Fleet Location Map
 ![Real-Time Fleet Location Map](cassandra/RealTimeFleetLocationMap.png)
-Interactive map visualization showing:
-- Live vehicle positions with GPS coordinates
-- Route tracking with point clusters
-- Real-time updates for vehicle movements
+- Live GPS tracking with clustering
+- Route visualization
+- Real-time position updates
 
 ## Performance & Scalability
 
