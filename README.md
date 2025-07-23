@@ -38,21 +38,30 @@ The system follows a modern data pipeline architecture:
 - **Performance trends** and insights
 
 
-##  Vehicle Simulation
+## Vehicle Fleet Simulation
 
-The system includes a realistic vehicle simulator that generates:
+The system includes a realistic vehicle simulator that generates telemetry for:
 
 ### Vehicle Types
-- **TRUCK_001, TRUCK_002,TRUCK_003**: Heavy vehicles with lower speed limits
-- **VAN_001**: Medium vehicle with balanced performance
-- **BIKE_003**: Motorcycle with higher speed capabilities
+- **TRUCK_001, TRUCK_002, TRUCK_003**: Heavy vehicles (max speed: 85-90 km/h)
+- **VAN_001, VAN_002**: Medium vehicles (max speed: 95-100 km/h)
+- **BUS_001**: Public transport (max speed: 70 km/h)
+- **BIKE_001, BIKE_002**: Motorcycles (max speed: 120-125 km/h)
+- **CAR_001, CAR_002**: Passenger cars (max speed: 110-115 km/h)
 
-### Simulated Data
-- **GPS coordinates** with route progression
-- **Speed variations** based on traffic patterns
-- **Engine temperature** correlated with load and speed
-- **Fuel consumption** based on vehicle type and usage
-- **Battery voltage** with realistic fluctuations
+### Simulated Data Points
+- **GPS coordinates** with realistic route progression
+- **Speed variations** based on traffic patterns and time of day
+- **Engine temperature** correlated with load, speed, and ambient conditions
+- **Fuel consumption** based on vehicle type and driving patterns
+- **Battery voltage** with realistic fluctuations (12.0-14.4V)
+- **Odometer readings** for maintenance tracking
+
+### Realistic Behaviors
+- **Traffic simulation**: Reduced speeds during rush hours (7-9 AM, 5-7 PM)
+- **Route following**: Vehicles progress along predefined GPS waypoints
+- **Fuel management**: Automatic refueling when fuel drops below 15%
+- **Temperature correlation**: Engine temperature increases with speed and load
 
 # IoT Fleet Monitoring Dashboard
 
