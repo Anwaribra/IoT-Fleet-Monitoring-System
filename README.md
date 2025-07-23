@@ -64,27 +64,22 @@ A real-time fleet monitoring system that tracks vehicle telemetry data using IoT
 
 ### Overview Dashboard
 ![Overview Dashboard](cassandra/fleet_overview_dashboard.png)
-The main dashboard shows key fleet metrics including:
-- Total number of vehicles in operation
-- Average fleet speed (63.6 km/h)
-- Average engine temperature (91.1°C)
-- Critical alerts status
-- Individual vehicle speed monitors
-- Active vehicles with current speeds
-- Speed distribution trends
-
-### Fleet Alert Management
-![Fleet Alert Management](cassandra/fleet_alert_management.png)
 - Total fleet metrics and KPIs
 - Real-time vehicle speed monitoring
 - Average engine temperature across fleet
 - Alert status indicators
 
-### Engine Temperature Monitoring
-![Engine Temperature Monitoring](cassandra/engine_temp_monitoring.png)
+### Fleet Alert Management
+![Fleet Alert Management](cassandra/fleet_alert_management.png)
 - Real-time critical alerts
 - Threshold monitoring for speed, temperature, and fuel
 - Vehicle-specific alert tracking
+
+### Engine Temperature Monitoring
+![Engine Temperature Monitoring](cassandra/engine_temp_monitoring.png)
+- Historical temperature trends
+- Multi-vehicle temperature comparison
+- Threshold alerts and analytics
 
 ### Real-Time Fleet Location Map
 ![Real-Time Fleet Location Map](cassandra/RealTimeFleetLocationMap.png)
