@@ -5,15 +5,24 @@ A comprehensive real-time IoT fleet monitoring system that tracks vehicle teleme
 ##  Architecture Overview
 
 ![PipelineArchitecture](cassandra/Pipelinearchitecture.png) 
+The system follows a modern data pipeline architecture:
+- **Data Collection**: MQTT broker receives telemetry from vehicle simulators
+- **Message Streaming**: Kafka handles high-throughput message queuing
+- **Stream Processing**: Spark Streaming processes real-time data transformations
+- **Data Storage**: Cassandra provides scalable, distributed storage
+- **Visualization**: Grafana dashboards for real-time monitoring
 
-##  Features
+
+## Features
+
 
 ### Vehicle Monitoring
-- **Real-time telemetry** from multiple vehicle types (trucks, vans, motorcycles)
-- **GPS tracking** with route simulation
+- **Real-time telemetry** from multiple vehicle types (trucks, vans, motorcycles, buses, cars)
+- **GPS tracking** with route simulation and position interpolation
 - **Engine diagnostics** including temperature and performance metrics
 - **Fuel level monitoring** with consumption tracking
-- **Battery voltage monitoring**
+- **Battery voltage monitoring** with realistic fluctuations
+- **Odometer tracking** for maintenance scheduling
 
 ### Anomaly Detection
 - **High engine temperature** alerts (>110°C)
@@ -87,4 +96,16 @@ Interactive map visualization showing:
 - Route tracking with point clusters
 - Real-time updates for vehicle movements
 
+## Performance & Scalability
 
+### Throughput Capabilities
+- **Target**: 100,000+ messages per hour
+- **Current**: ~10 vehicles × 3600 messages/hour = 36,000 msg/h
+- **Kafka Partitioning**: By vehicle_id for parallel processing
+- **Cassandra**: Optimized for time-series data with clustering
+
+### Monitoring Metrics
+- Message processing rate (messages/second)
+- Kafka consumer lag
+- Cassandra write latency
+- Spark streaming batch processing time
